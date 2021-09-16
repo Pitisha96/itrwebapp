@@ -11,7 +11,7 @@
     <groupId>by.itransition</groupId>
     <artifactId>itrwebapp</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>itrwebapp</name>
     <description>Demo project for itransition</description>
     <properties>
