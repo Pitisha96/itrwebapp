@@ -1,11 +1,8 @@
 package by.itransition.itrwebapp.controllers;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
+import by.itransition.itrwebapp.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.client.authentication.OAuth2LoginAuthenticationToken;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -13,12 +10,23 @@ import java.security.Principal;
 
 @Controller
 public class UserPageController {
+    private final UserService userService;
+
+    @Autowired
+    public UserPageController(UserService userService) {
+        this.userService = userService;
+    }
+
     @GetMapping("/user")
     public String adduser(Principal principal){
         OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) principal;
-        System.out.println(token.getAuthorizedClientRegistrationId());
-        System.out.println(principal);
-        //System.out.println(token.getPrincipal().getAttributes().get("login"));
+        if (userService.isContainsByToken(token))
+            userService.setLastDateByUsername(token);
+        else
+            userService.addUserByToken(token);
+        //facebook id
+        //google email
+        //github login
         return "userpage";
     }
 
