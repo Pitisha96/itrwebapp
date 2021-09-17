@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
@@ -19,4 +20,8 @@ public class User {
     private Date firstDate;
     private Date lastDate;
     private boolean blocked;
+
+    public String getFormatFirstDate(){
+        return (new SimpleDateFormat("yyyy.MM.dd").format(firstDate)).toString();
+    }
 }

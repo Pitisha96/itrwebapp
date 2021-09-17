@@ -8,6 +8,7 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -46,6 +47,13 @@ public class UserService {
         userRepository.findAllByUsername(
                 (String) token.getPrincipal().getAttributes()
                         .get(securityUtil.keyBySocial(token.getAuthorizedClientRegistrationId()))
-        ).forEach(e->e.setLastDate(new Date()));
+        ).forEach(e->{
+            e.setLastDate(new Date());
+            userRepository.save(e);
+        });
+    }
+
+    public List<User> findAllByOrderByIdAsc(){
+        return userRepository.findAllByOrderByIdAsc();
     }
 }

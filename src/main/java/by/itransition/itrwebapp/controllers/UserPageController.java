@@ -4,9 +4,11 @@ import by.itransition.itrwebapp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.security.Principal;
+import java.text.SimpleDateFormat;
 
 @Controller
 public class UserPageController {
@@ -18,15 +20,15 @@ public class UserPageController {
     }
 
     @GetMapping("/user")
-    public String adduser(Principal principal){
+    public String addUser(Model model, Principal principal){
         OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) principal;
-        if (userService.isContainsByToken(token))
+        if (userService.isContainsByToken(token)){
             userService.setLastDateByUsername(token);
-        else
+        }else{
             userService.addUserByToken(token);
-        //facebook id
-        //google email
-        //github login
+        }
+        model.addAttribute("users",userService.findAllByOrderByIdAsc());
+        model.addAttribute("dateformat",new SimpleDateFormat("yyyy.MM.dd"));
         return "userpage";
     }
 

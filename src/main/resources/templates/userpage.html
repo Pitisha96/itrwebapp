@@ -1,10 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>User page</title>
 </head>
 <body>
-    <p>User page</p>
+    <table>
+        <tr>
+            <th>id</th>
+            <th>username</th>
+            <th>social</th>
+            <th>first date</th>
+            <th>last date</th>
+            <th>blocked</th>
+        </tr>
+        <tr th:each="user:${users}">
+            <td th:text="${user.id}">id</td>
+            <td th:text="${user.username}">username</td>
+            <td th:text="${user.social}">social</td>
+            <td th:text="${dateformat.format(user.firstDate)}">first date</td>
+            <td th:text="${dateformat.format(user.lastDate)}">last date</td>
+            <td th:text="${user.blocked}?'blocked':'unblocked'">false</td>
+        </tr>
+    </table>
 </body>
 </html>
