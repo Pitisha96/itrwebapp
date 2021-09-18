@@ -4,17 +4,26 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta charset="UTF-8">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"></script>
     <title>Main page</title>
 </head>
 <body>
+<input type="hidden" id="facebook" th:value="${countFacebook}"/>
+<input type="hidden" id="github" th:value="${countGithub}"/>
+<input type="hidden" id="google" th:value="${countGoogle}"/>
 <div class="container-fluid">
-    <input type="hidden" id="allUsers" th:value="${countAllUsers}"/>
-    <input type="hidden" id="facebook" th:value="${countFacebook}"/>
-    <input type="hidden" id="github" th:value="${countGithub}"/>
-    <input type="hidden" id="google" th:value="${countGoogle}"/>
-    <canvas id="pieChart"></canvas>
+    <div class="row justify-content-center">
+        <div class="col-5">
+            <canvas id="pieChart"></canvas>
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid">
+
+
 </div>
 
 <hr>

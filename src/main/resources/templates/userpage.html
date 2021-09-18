@@ -2,26 +2,107 @@
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <title>User page</title>
 </head>
 <body>
-    <table>
-        <tr>
-            <th>id</th>
-            <th>username</th>
-            <th>social</th>
-            <th>first date</th>
-            <th>last date</th>
-            <th>blocked</th>
-        </tr>
-        <tr th:each="user:${users}">
-            <td th:text="${user.id}">id</td>
-            <td th:text="${user.username}">username</td>
-            <td th:text="${user.social}">social</td>
-            <td th:text="${dateformat.format(user.firstDate)}">first date</td>
-            <td th:text="${dateformat.format(user.lastDate)}">last date</td>
-            <td th:text="${user.blocked}?'blocked':'unblocked'">false</td>
-        </tr>
-    </table>
+<div class="container-fluid">
+    <div class="row justify-content-end">
+        <div class="col-2">
+            <button type="button" class="btn btn-success"><span class="oi" data-glyph="lock-unlocked"></span></button>
+            <button type="button" class="btn btn-danger"><span class="oi" data-glyph="lock-locked"></span></button>
+            <button type="button" class="btn btn-dark"><span class="oi" data-glyph="delete"></span></button>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col">
+            <table id="user-table" class="table table-bordered table-hover table_sort">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col"><input type="checkbox" onchange="checkedDisplayed(this)">
+                    <th scope="col">id</th>
+                    <th scope="col">username</th>
+                    <th scope="col">
+                        <select id="socialSelect" class="form-select" onchange="myFilter('social')">
+                            <option selected>social</option>
+                            <option>github</option>
+                            <option>google</option>
+                            <option>facebook</option>
+                        </select>
+                    </th>
+                    <th scope="col">first date</th>
+                    <th scope="col">last date</th>
+                    <th scope="col">
+                        <select id="blockedSelect" class="form-select" onchange="myFilter('blocked')">
+                            <option selected>isBlocked</option>
+                            <option>yes</option>
+                            <option>no</option>
+                        </select></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user:${users}">
+                    <td scope="row"><input type="checkbox">
+                    <td th:text="${user.id}">id</td>
+                    <td th:text="${user.username}">username</td>
+                    <td th:text="${user.social}">social</td>
+                    <td th:text="${dateformat.format(user.firstDate)}">first date</td>
+                    <td th:text="${dateformat.format(user.lastDate)}">last date</td>
+                    <td th:text="${user.blocked}?'yes':'no'">false</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', () => {
+
+        const getSort = ({ target }) => {
+            const order = (target.dataset.order = -(target.dataset.order || -1));
+            const index = [...target.parentNode.cells].indexOf(target);
+            const collator = new Intl.Collator(['en', 'ru'], { numeric: true });
+            const comparator = (index, order) => (a, b) => order * collator.compare(
+                a.children[index].innerHTML,
+                b.children[index].innerHTML
+            );
+
+            for(const tBody of target.closest('table').tBodies)
+                tBody.append(...[...tBody.rows].sort(comparator(index, order)));
+
+            for(const cell of target.parentNode.cells)
+                cell.classList.toggle('sorted', cell === target);
+        };
+
+        document.querySelectorAll('.table_sort thead').forEach(tableTH => tableTH.addEventListener('click', () => getSort(event)));
+    });
+    function myFilter(param) {
+        let idElem = param=='social'?'socialSelect':'blockedSelect'
+        let idTd = param=='social'?3:6
+        let filter = document.getElementById(idElem).value;
+        let tr = document.getElementById("user-table").getElementsByTagName('tbody')[0]
+            .getElementsByTagName("tr")
+        for (let i = 0; i < tr.length; i++) {
+            let td = tr[i].getElementsByTagName("td")[idTd];
+            let txtValue = td.textContent||td.innerText;
+            if (txtValue.indexOf(filter) > -1||filter=='social'||filter=='isBlocked') {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
+    function checkedDisplayed(elem){
+        let trs = document.getElementById("user-table").getElementsByTagName('tbody')[0]
+            .getElementsByTagName("tr")
+        for(let i=0;i<trs.length;i++){
+            if(trs[i].style.display!="none"){
+                trs[i].getElementsByTagName('td')[0].getElementsByTagName('input')[0].checked=elem.checked;
+            }
+        }
+    }
+</script>
 </body>
 </html>
