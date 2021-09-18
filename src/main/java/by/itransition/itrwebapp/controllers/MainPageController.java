@@ -19,7 +19,11 @@ public class MainPageController {
     }
 
     @GetMapping("/")
-    public String greeting(){
+    public String greeting(Model model){
+        model.addAttribute("countAllUsers",userService.countUsers());
+        model.addAttribute("countGoogle",userService.countAllBySocial("google"));
+        model.addAttribute("countGithub",userService.countAllBySocial("github"));
+        model.addAttribute("countFacebook",userService.countAllBySocial("facebook"));
         return "mainpage";
     }
 }

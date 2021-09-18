@@ -56,4 +56,12 @@ public class UserService {
     public List<User> findAllByOrderByIdAsc(){
         return userRepository.findAllByOrderByIdAsc();
     }
+
+    public long countUsers(){
+        return userRepository.count();
+    }
+
+    public long countAllBySocial(String social){
+        return userRepository.countAllBySocial(social);
+    }
 }
