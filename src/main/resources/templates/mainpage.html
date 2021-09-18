@@ -14,55 +14,33 @@
 <input type="hidden" id="google" th:value="${countGoogle}"/>
 <div class="container-fluid">
     <div class="row justify-content-center">
-        <div class="col-5">
+        <div class="col-4">
             <canvas id="pieChart"></canvas>
         </div>
     </div>
+    <div class="row justify-content-center" sec:authorize="!isAuthenticated()">
+        <div class="col-1 align-self-center">
+            <a href="/oauth2/authorization/google">
+                <img src="img/google.svg" width="80%" height="80%" alt="google"/>
+            </a>
+        </div>
+        <div class="col-1 align-self-center">
+            <a href="/oauth2/authorization/github">
+                <img src="img/github.svg" width="80%" height="80%" alt="github"/>
+            </a>
+        </div>
+        <div class="col-1 align-self-center">
+            <a href="/oauth2/authorization/facebook">
+                <img src="img/facebook.svg" width="90%" height="90%" alt="facebook"/>
+            </a>
+        </div>
+    </div>
+    <div class="row justify-content-center" sec:authorize="isAuthenticated()">
+        <div class="col-1 align-self-center">
+            <a th:href="@{/logout}"><img src="img/logout.svg" width="75%" height="75%" alt="google"/></a>
+        </div>
+    </div>
 </div>
-
-
-<div class="container-fluid">
-
-
-</div>
-
-<hr>
-<div sec:authorize="isAuthenticated()">
-    <a th:href="@{/logout}">logout</a>
-</div>
-<div sec:authorize="!isAuthenticated()">
-    <p>Sign in</p>
-    <ul>
-        <li><a href="/oauth2/authorization/google">google</a></li>
-        <li><a href="/oauth2/authorization/facebook">facebook</a></li>
-        <li><a href="/oauth2/authorization/github">github</a></li>
-    </ul>
-</div>
-<script type="text/javascript">
-    let pieChart = document.getElementById('pieChart').getContext('2d');
-    let barChart =new Chart(pieChart,{
-        type:'pie',
-        data:{
-            labels:['Google','Facebook','Github'],
-            datasets:[{
-                label:'Login via social networks',
-                data:[
-                    document.getElementById('google').getAttribute('value'),
-                    document.getElementById('facebook').getAttribute('value'),
-                    document.getElementById('github').getAttribute('value')
-                ],
-                backgroundColor:[
-                    'rgba(255,99,132,0.6)',
-                    'rgba(54, 162, 235, 0.6)',
-                    'rgba(69,146,30,0.6)'
-                ],
-                borderWidth:1,
-                borderColor:'#777',
-                hoverBorderWidth:3,
-                hoverBorderColor:'#000'
-            }]
-        }
-    });
-</script>
+<script src="/js/pieChartMainPage.js"></script>
 </body>
 </html>
