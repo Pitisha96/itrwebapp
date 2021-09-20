@@ -28,8 +28,8 @@ function myFilter() {
         let tdBlock = tr[i].getElementsByTagName("td")[6];
         let txtSoc = tdSoc.textContent||tdSoc.innerText;
         let txtBlock = tdBlock.textContent||tdSoc.innerText;
-        if ((filterSoc=='social'||txtSoc.indexOf(filterSoc) > -1)
-            &&(filterBlock=='status'||txtBlock.indexOf(filterBlock)>-1)){
+        if ((filterSoc=='social'||txtSoc==filterSoc)
+            &&(filterBlock=='status'||txtBlock==filterBlock)){
             tr[i].style.display = "";
         } else {
             tr[i].style.display = "none";
