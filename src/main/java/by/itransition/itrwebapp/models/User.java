@@ -2,6 +2,7 @@ package by.itransition.itrwebapp.models;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
@@ -11,7 +12,7 @@ import java.util.Date;
 @Table(name = "users")
 @Data
 @NoArgsConstructor
-public class User {
+public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

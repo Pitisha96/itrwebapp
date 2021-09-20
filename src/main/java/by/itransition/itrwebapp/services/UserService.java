@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -63,5 +64,34 @@ public class UserService {
 
     public long countAllBySocial(String social){
         return userRepository.countAllBySocial(social);
+    }
+
+    public void deleteById(long id){
+        userRepository.deleteById(id);
+    }
+
+    public void lockById(long id){
+        Optional<User> optionalUser = userRepository.findById(id);
+        if(optionalUser.isPresent()){
+            User user = optionalUser.get();
+            user.setBlocked(true);
+            userRepository.save(user);
+        }
+    }
+
+    public void unlockById(long id){
+        Optional<User> optionalUser = userRepository.findById(id);
+        if(optionalUser.isPresent()){
+            User user = optionalUser.get();
+            user.setBlocked(false);
+            userRepository.save(user);
+        }
+    }
+
+    public List<User> findAllByToken(OAuth2AuthenticationToken token){
+        String social = token.getAuthorizedClientRegistrationId();
+        String username = (String) token.getPrincipal().getAttributes()
+                .get(securityUtil.keyBySocial(social));
+        return userRepository.findAllByUsernameAndSocial(username,social);
     }
 }

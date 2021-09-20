@@ -11,4 +11,5 @@ public interface UserRepository extends JpaRepository<User,Long> {
     List<User> findAllByUsername(String name);
     List<User> findAllByOrderByIdAsc();
     long countAllBySocial(String social);
+    List<User> findAllByUsernameAndSocial(String username,String Social);
 }
